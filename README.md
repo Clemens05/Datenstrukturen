@@ -9,4 +9,5 @@ Eigene Datenstrukturenklassen (wie z.B. eine eigene Queue-Klasse) sind mit einem
 ## Daten
 
 Informatik LK Q1
+
 Jahrgang 2021/20222
