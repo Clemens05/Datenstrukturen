@@ -3,7 +3,7 @@ package com.clemax;
 public class OQueue<ContentType> {
     private class Node {
         private Node nextNode;
-        private ContentType content;
+        private final ContentType content;
 
         public Node(ContentType pContent) {
             content = pContent;
