@@ -1,7 +1,6 @@
 package com.clemax;
 
 public class Main {
-
     public static void main(String[] args) {
         stackTesting();
         System.out.println();
