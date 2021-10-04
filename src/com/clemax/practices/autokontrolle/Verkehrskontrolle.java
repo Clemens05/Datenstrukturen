@@ -5,12 +5,16 @@ import com.clemax.OQueue;
 public class Verkehrskontrolle {
     private int anzahlAutos;
     private int anzahlMaengel;
+    private int maxAnzhalAutos;
+    private int minAnzahlMaengel;
     private final OQueue<Fahrzeug> fahrzeuge;
     private final OQueue<Fahrzeug> mangelhafteFahrzeuge;
 
-    public Verkehrskontrolle() {
+    public Verkehrskontrolle(int maxAnzahlAutos, int minAnzahlMaengel) {
         this.anzahlAutos = 0;
         this.anzahlMaengel = 0;
+        this.maxAnzhalAutos = maxAnzahlAutos;
+        this.minAnzahlMaengel = minAnzahlMaengel;
         this.fahrzeuge = new OQueue<Fahrzeug>();
         this.mangelhafteFahrzeuge = new OQueue<Fahrzeug>();
     }
@@ -54,8 +58,10 @@ public class Verkehrskontrolle {
     }
 
     public void addFahrzeug(Fahrzeug fahrzeug) {
-        this.anzahlAutos++;
-        this.fahrzeuge.enqueue(fahrzeug);
+        if (!(anzahlAutos < maxAnzhalAutos) || anzahlMaengel > minAnzahlMaengel) {
+            this.anzahlAutos++;
+            this.fahrzeuge.enqueue(fahrzeug);
+        }
     }
 
     public Fahrzeug getFirstMangelhafteFahrzeug() {
@@ -63,8 +69,10 @@ public class Verkehrskontrolle {
     }
 
     public void addMangehafteFahrzeug(Fahrzeug fahrzeug) {
-        this.anzahlMaengel++;
-        this.mangelhafteFahrzeuge.enqueue(fahrzeug);
+        if (!(anzahlAutos < maxAnzhalAutos) || anzahlMaengel > minAnzahlMaengel) {
+            this.anzahlMaengel++;
+            this.mangelhafteFahrzeuge.enqueue(fahrzeug);
+        }
     }
 
     public boolean fahrzeugeIsEmpty() {
@@ -73,5 +81,21 @@ public class Verkehrskontrolle {
 
     public boolean mangelhafteFahrzeugeIsEmpty() {
         return this.mangelhafteFahrzeuge.isEmpty();
+    }
+
+    public int getMaxAnzhalAutos() {
+        return maxAnzhalAutos;
+    }
+
+    public void setMaxAnzhalAutos(int maxAnzhalAutos) {
+        this.maxAnzhalAutos = maxAnzhalAutos;
+    }
+
+    public int getMinAnzahlMaengel() {
+        return minAnzahlMaengel;
+    }
+
+    public void setMinAnzahlMaengel(int minAnzahlMaengel) {
+        this.minAnzahlMaengel = minAnzahlMaengel;
     }
 }

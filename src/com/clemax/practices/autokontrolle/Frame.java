@@ -9,6 +9,8 @@ import java.util.Objects;
 public class Frame extends JFrame {
     private Verkehrskontrolle verkehrskontrolle;
 
+    private String windowTitle = "Autokontrolle Simulation";
+
     private JPanel mainPanel;
 
     private JMenuBar mainMenuBar;
@@ -24,7 +26,22 @@ public class Frame extends JFrame {
     public Frame() {
         initComponents();
 
-        verkehrskontrolle = new Verkehrskontrolle();
+        String inputMaxAnzahlAutos = JOptionPane.showInputDialog(null, "Gebe eine maximale Anzahl von kontrollierenden Fahrzeugen an:", windowTitle, JOptionPane.INFORMATION_MESSAGE);
+        String inputMinAnzahlMaengel = JOptionPane.showInputDialog(null, "Gebe eine minimale Anzahl von mangelhaften Fahrzeugen an:", windowTitle, JOptionPane.INFORMATION_MESSAGE);
+
+        int maxAnzahlAutos;
+        try {
+            maxAnzahlAutos = Integer.parseInt(inputMaxAnzahlAutos);
+        } catch (Exception ex) {
+            maxAnzahlAutos = 100;
+        }
+
+        int minAnzahlMaengel = 100;
+        try {
+            minAnzahlMaengel = Integer.parseInt(inputMinAnzahlMaengel);
+        } catch (Exception ignored) { }
+
+        verkehrskontrolle = new Verkehrskontrolle(maxAnzahlAutos, minAnzahlMaengel);
     }
 
     private void initComponents() {
