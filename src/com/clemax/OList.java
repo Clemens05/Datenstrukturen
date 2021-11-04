@@ -1,5 +1,8 @@
+<<<<<<< HEAD
 package com.clemax;
 
+=======
+>>>>>>> origin/master
 public class OList<ContentType> {
     private class Node {
         private Node nextNode;
@@ -42,6 +45,7 @@ public class OList<ContentType> {
     }
 
     // muss verbessert werden
+<<<<<<< HEAD
     public void toFirst() {
         if (!this.isEmpty()) {
             current = first;
@@ -106,6 +110,17 @@ public class OList<ContentType> {
             if (current != last) {
                 current = current.getNextNode();
             }
+=======
+    public void next() {
+        if (!this.isEmpty() && this.hasAccess())
+            current = current.getNextNode()
+    }
+
+    // muss verbessert werden
+    public void toFirst() {
+        if (!this.isEmpty && this.hasAccess && current != last) {
+            current = first;
+>>>>>>> origin/master
         }
     }
 
@@ -115,7 +130,11 @@ public class OList<ContentType> {
                 Node neu = new Node(pContent);
                 if (!this.isEmpty()) {
                     if (current == first) {
+<<<<<<< HEAD
                         neu.setNextNode(first);
+=======
+                        neu.setNext(first);
+>>>>>>> origin/master
                         first = neu;
                     } else {
                         this.getPrevious().setNextNode(neu);
@@ -132,6 +151,7 @@ public class OList<ContentType> {
     private Node getPrevious() {
         Node temp = current;
         this.toFirst();
+<<<<<<< HEAD
         while (current.getNextNode() != temp)
             this.next();
         Node vorgaenger = current;
@@ -139,3 +159,12 @@ public class OList<ContentType> {
         return vorgaenger;
     }
 }
+=======
+        while (current.getNext() != ablage)
+            current.next();
+        Node vorgaenger = current;
+        current = ablage;
+        return vorgaenger;
+    }
+}
+>>>>>>> origin/master
