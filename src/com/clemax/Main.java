@@ -13,8 +13,6 @@ public class Main {
         list.append("zwei");
         list.append("drei");
 
-
-
         list.toFirst();
         list.next();
 
