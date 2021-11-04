@@ -49,6 +49,7 @@ public class Frame extends JFrame {
             private JFrame newVehicleFrame;
             private JPanel newVehiclePanel;
 
+
             private JLabel modellDescriptionLabel;
             private JLabel farbeDescriptionLabel;
             private JLabel kennzeichenDescriptionLabel;
