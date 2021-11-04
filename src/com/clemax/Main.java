@@ -8,7 +8,7 @@ import java.lang.reflect.Array;
 
 public class Main {
     public static void main(String[] args) {
-        OList<String> list = new OList<>();
+        List<String> list = new List<>();
         list.append("eins");
         list.append("zwei");
         list.append("drei");
