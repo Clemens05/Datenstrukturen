@@ -1,0 +1,30 @@
+// werte ist ein Array vom Datentyp int
+
+private static void insertion_sort() {
+    for (int i = 1; i < werte.length; i++) {
+        int current = werte[i];
+        int currentPos = i - 1;
+        while (currentPos >= 0 && current < werte[currentPos]) {
+            werte[currentPos + 1] = werte[currentPos];
+            currentPos--;
+        }
+        werte[currentPos + 1] = current;
+    }
+}
+
+private static void selection_sort() {
+    for (int i = 0; i < werte.length - 1; i++) {
+        int min = werte[i];
+        int pos = i;
+
+        for (int j = i + 1; j < werte.length; j++) {
+            if (min > werte[j]) {
+                min = werte[j];
+                pos = j;
+            }
+        }
+
+        werte[pos] = werte[i];
+        werte[i] = min;
+    }
+}
