@@ -1,0 +1,14 @@
+# schema to print trees
+
+tree (binary, "Familienstammbaum", tree_binary_1_0) [
+    5: [
+        7: [
+            5: [],
+            6: []
+        ],
+        8: [
+            10: [],
+            4: []
+        ]
+    ]
+]
