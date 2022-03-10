@@ -1,28 +1,34 @@
 package com.clemax.practices.morsealphabet;
 
+import org.w3c.dom.Text;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.Random;
 
 public class Frame extends JFrame {
+    private Translator translator;
+
     private BufferedImage image;
 
     private String windowTitle;
 
     private JPanel mainPanel;
-    private JTextField textTextField;
     private JTextArea textTextArea;
     private JLabel imageLabel;
-    private JTextField morseTextField;
+    private JTextArea morseTextArea;
 
     private final Font textFont = new Font(Font.SERIF, Font.PLAIN, 11);
     private final Font bigTextFont = new Font(Font.SERIF, Font.PLAIN, 15);
@@ -31,6 +37,7 @@ public class Frame extends JFrame {
     private final Font subheadingFont = new Font(Font.SERIF, Font.BOLD, 24);
 
     public Frame(String windowTitle) {
+        translator = new Translator();
         this.windowTitle = windowTitle;
 
         initComponents();
@@ -45,27 +52,24 @@ public class Frame extends JFrame {
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         mainPanel = new JPanel();
-        textTextField = new JTextField();
         textTextArea = new JTextArea();
         imageLabel = null;
-        morseTextField = new JTextField();
+        morseTextArea = new JTextArea();
 
         mainPanel.setLayout(new GridLayout(1, 3));
 
-        textTextField.setFont(bigTextFont);
-        textTextField.setHorizontalAlignment(SwingConstants.CENTER);
-        textTextField.setText("HALLO");
-        textTextField.addCaretListener(new CaretListener() {
+        textTextArea.setFont(bigTextFont);
+        textTextArea.setLineWrap(true);
+        textTextArea.setText("HALLO");
+        textTextArea.addCaretListener(new CaretListener() {
             @Override
             public void caretUpdate(CaretEvent e) {
-                String input = textTextField.getText();
-                System.out.println("Text updated: " + input);
+                String text = textTextArea.getText();
+                System.out.println("Text updated: " + text);
+
+                if (!text.isEmpty()) morseTextArea.setText(translator.codieren(text));
             }
         });
-
-        textTextArea.setFont(bigTextFont);
-
-        textTextArea.setText("HALLO");
 
         try {
             image = ImageIO.read(new File("2_arrows.png"));
@@ -77,20 +81,22 @@ public class Frame extends JFrame {
             imageLabel = new JLabel(new ImageIcon(image));
         }
 
-        morseTextField.setFont(monospacedTextFont);
-        morseTextField.setHorizontalAlignment(SwingConstants.CENTER);
-        morseTextField.setText("····/·-/·-··/·-··/---");
-        morseTextField.addCaretListener(new CaretListener() {
+        morseTextArea.setFont(monospacedTextFont);
+        morseTextArea.setLineWrap(true);
+        morseTextArea.setText("..../.-/.-../.-../---");
+        morseTextArea.addCaretListener(new CaretListener() {
             @Override
             public void caretUpdate(CaretEvent e) {
-                String input = morseTextField.getText();
-                System.out.println("Morse updated: " + input);
+                String morsecode = morseTextArea.getText();
+                System.out.println("Morsecode updated: " + morsecode);
+
+                if (!morsecode.isEmpty()) textTextArea.setText(translator.decodieren(morsecode));
             }
         });
 
-        mainPanel.add(textTextField);
+        mainPanel.add(textTextArea);
         mainPanel.add(imageLabel);
-        mainPanel.add(morseTextField);
+        mainPanel.add(morseTextArea);
         this.add(mainPanel);
 
         this.pack();
@@ -118,7 +124,7 @@ public class Frame extends JFrame {
     }
 
     public static void main(String[] args) {
-        Frame f = new Frame("Morse Parse");
+        Frame f = new Frame("Morse Übersetzer");
         f.setVisible(true);
     }
 }

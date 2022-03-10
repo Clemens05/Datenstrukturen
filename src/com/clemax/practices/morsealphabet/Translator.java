@@ -2,6 +2,8 @@ package com.clemax.practices.morsealphabet;
 
 import com.clemax.BinaryTree;
 
+import java.util.Locale;
+
 public class Translator {
     private BinaryTree<Character> morseTree;
 
@@ -97,44 +99,115 @@ public class Translator {
         */
 
         morseTree = new BinaryTree<>();
-        zeicheneinfuegen("", 'A', morseTree);
+        morseTree = zeicheneinfuegen(".-", 'A', morseTree);
+        morseTree = zeicheneinfuegen("-...", 'B', morseTree);
+        morseTree = zeicheneinfuegen("-.-.", 'C', morseTree);
+        morseTree = zeicheneinfuegen("-..", 'D', morseTree);
+        morseTree = zeicheneinfuegen(".", 'E', morseTree);
+        morseTree = zeicheneinfuegen("..-.", 'F', morseTree);
+        morseTree = zeicheneinfuegen("--.", 'G', morseTree);
+        morseTree = zeicheneinfuegen("....", 'H', morseTree);
+        morseTree = zeicheneinfuegen("..", 'I', morseTree);
+        morseTree = zeicheneinfuegen(".---", 'J', morseTree);
+        morseTree = zeicheneinfuegen("-.-", 'K', morseTree);
+        morseTree = zeicheneinfuegen(".-..", 'L', morseTree);
+        morseTree = zeicheneinfuegen("--", 'M', morseTree);
+        morseTree = zeicheneinfuegen("-.", 'N', morseTree);
+        morseTree = zeicheneinfuegen("---", 'O', morseTree);
+        morseTree = zeicheneinfuegen(".--.", 'P', morseTree);
+        morseTree = zeicheneinfuegen("--.-", 'Q', morseTree);
+        morseTree = zeicheneinfuegen(".-.", 'R', morseTree);
+        morseTree = zeicheneinfuegen("...", 'S', morseTree);
+        morseTree = zeicheneinfuegen("-", 'T', morseTree);
+        morseTree = zeicheneinfuegen("..-", 'U', morseTree);
+        morseTree = zeicheneinfuegen("...-", 'V', morseTree);
+        morseTree = zeicheneinfuegen(".--", 'W', morseTree);
+        morseTree = zeicheneinfuegen("-..-", 'X', morseTree);
+        morseTree = zeicheneinfuegen("-.--", 'Y', morseTree);
+        morseTree = zeicheneinfuegen("--..", 'Z', morseTree);
+        morseTree.setContent(' ');
     }
 
-    public String toMorse(String text) {
-        char[] chars = text.toCharArray();
+    public String codieren(String text) {
+        text = text.toUpperCase(Locale.ROOT);
+        String morsecode = "";
 
-        for (char c: chars) {
-            System.out.println(c);
+        for (int i = 0; i < text.length(); i++) {
+            morsecode += zeichenCodieren(text.charAt(i), morseTree, "") + ((text.length() == i + 1) ? "" : "/");
         }
 
-        return "";
+        return morsecode;
     }
 
-    public void getCharByTree(BinaryTree<Character> tree, char c) {
-        if (tree.getLeftTree() != null) {
-            inOrder(tree.getLeftTree());
+    private String zeichenCodieren(char zeichen, BinaryTree<Character> tree, String morsecode) {
+        String text;
+
+        if (tree.isEmpty()) {
+            return "";
+        } else {
+            if (tree.getContent() == zeichen) {
+                text = morsecode;
+            } else {
+                text = zeichenCodieren(zeichen, tree.getLeftTree(), morsecode + ".") +
+                        zeichenCodieren(zeichen, tree.getRightTree(), morsecode + "-");
+            }
         }
-        System.out.println(tree.getContent());
-        if (tree.getRightTree() != null) {
-            inOrder(tree.getRightTree());
+
+        return text;
+    }
+
+    public String decodieren(String morsecode) {
+        if (!morsecode.endsWith("/")) {
+            morsecode += "/";
         }
+
+        String text = "";
+        String teilMorsecode = "";
+
+        for (int i = 0; i < morsecode.length(); i++) {
+            switch (morsecode.charAt(i)) {
+                case '.' -> teilMorsecode += '.';
+                case '-' -> teilMorsecode += '-';
+                case '/' -> {
+                    text += zeichenDecodieren(teilMorsecode);
+                    teilMorsecode = "";
+                }
+                default -> System.err.println("Der Morsecode darf nur '.', '-' und '/' Symbole enthalten");
+            }
+        }
+
+        return text;
+    }
+
+    private char zeichenDecodieren(String morsecode) {
+        BinaryTree<Character> currentTree = this.morseTree;
+
+        for (int i = 0; i < morsecode.length(); i++) {
+            if (morsecode.charAt(i) == '.') {
+                currentTree = currentTree.getLeftTree();
+            } else if (morsecode.charAt(i) == '-') {
+                currentTree = currentTree.getRightTree();
+            }
+        }
+
+        return currentTree.getContent();
     }
 
     public void inOrder(BinaryTree<Character> b) {
-        if (b.getLeftTree() != null) {
-            inOrder(b.getLeftTree());
-        }
-        System.out.println(b.getContent());
-        if (b.getRightTree() != null) {
-            inOrder(b.getRightTree());
-        }
+        if (b == null) return;
+
+        inOrder(b.getLeftTree());
+
+        System.out.println(b.getContent() + " ");
+
+        inOrder(b.getLeftTree());
     }
 
     public BinaryTree<Character> getMorseTree() {
         return morseTree;
     }
 
-    public BinaryTree<Character> zeicheneinfuegen(String morseCode, char zeichen, BinaryTree<Character> tree) {
+    private BinaryTree<Character> zeicheneinfuegen(String morseCode, char zeichen, BinaryTree<Character> tree) {
         if (tree.isEmpty()) {
             tree = new BinaryTree<>(zeichen);
         }
